@@ -75,6 +75,37 @@
             .btn {
                 margin: 0 auto;
             }
+            #myInput {
+            background-image: url('/css/searchicon.png');
+            background-position: 10px 12px;
+            background-repeat: no-repeat;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+          }
+
+            #myUL {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+          }
+
+            #myUL li a {
+                border: 1px solid #ddd;
+                margin-top: -1px; /* Prevent double borders */
+                background-color: #f6f6f6;
+                padding: 12px;
+                text-decoration: none;
+                font-size: 18px;
+                color: black;
+                display: block
+            }
+
+            #myUL li a:hover:not(.header) {
+                    background-color: #eee;
+                }
     </style>
 
 
@@ -88,7 +119,9 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Movie App</a>
             </div>
-
+            <div>
+                <input type="text" id="myInput" onkeyup="searchOwnedMovies(), searchWantedMovies()" placeholder="Search for names.." title="Type in a name">
+            </div>
         </div>
         <!-- /.container-fluid -->
     </nav>
@@ -156,7 +189,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-primary" id="submit1">Save Changes</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -184,7 +217,7 @@
                                         <div>
                                             <div class="form-group">
                                                 <label for="Title1">Title</label>
-                                                <input type="text" class="form-control" id="Title1" placeholder="title" value="">
+                                                <input type="text" class="form-control" id="Title2" placeholder="title" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -192,7 +225,7 @@
                                         <div>
                                             <div class="form-group">
                                                 <label for="Description1">Description</label>
-                                                <input type="text" class="form-control" id="Description1" placeholder="Description" value="">
+                                                <input type="text" class="form-control" id="Description2" placeholder="Description" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -202,7 +235,7 @@
                                                 <label for="Price1">Price</label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon">$</div>
-                                                    <input type="number" class="form-control" id="Price1" placeholder="Price" value="">
+                                                    <input type="number" class="form-control" id="Price2" placeholder="Price" value="">
                                                     <div class="input-group-addon">.00</div>
                                                 </div>
                                             </div>
@@ -213,7 +246,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-primary" id="submit2">Save Changes</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -249,35 +282,85 @@
     //       alert("Doesn't Work");
     //     }
     //  });
-    $(document).ready(function() {
-      $('#submit1').click(function(event) {
-        var Title1 = $('#Title1').val();
-        var Description1 = $('#Description1').val();
-        var Price1 = $('#Price1').val();
-        $("#ownedMovies").append('<li class="list-group-item" id="listTitle" value=""></li>' +
-          '<li class="list-group-item" id="listDecription" value=""></li>' +
-          '<li class="list-group-item" id="listPrice" value=""></li>' +
-          '<br></br>')
-        $('#listTitle').text(Title1);
-        $('#listDecription').text(Description1);
-        $('#listPrice').text("$" + Price1);
+    //$(document).ready(function() {
+    //    $('#submit1').click(function (event) {
+    //        console.log("the button was clicked");
+    //    var Title1 = $('#Title1').val();
+    //    var Description1 = $('#Description1').val();
+    //    var Price1 = $('#Price1').val();
+    //    $.ajax({
+    //        url: "http://localhost:52929/Api/Movies/AddMovies",
+    //        data: "{Title: yes man, isOwned:1, Description: jim carrey, Price: 14.95, isActive:1}",
+    //        success: function () {
+    //            console.log("the json worked");
+    //            $.ajax({
+    //                url: "http://localhost:52929/Api/Movies/OwnedMovies",
+    //                success: function (result, status) {
+    //                    console.log("populate movies worked");
+    //                    populateExistingMovies(result, status)
+    //                }
+    //            });
+    //        }
+    //    })
+    //    });
+    //});
+        //$("#ownedMovies").append('<li class="list-group-item" id="listTitle" value=""></li>' +
+        //  '<li class="list-group-item" id="listDecription" value=""></li>' +
+        //  '<li class="list-group-item" id="listPrice" value=""></li>' +
+        //  '<br></br>')
+        //$('#listTitle').text(Title1);
+        //$('#listDecription').text(ription1);
+        //$('#listPrice').text("$" + Price1);
         // $('#Title1').val("");
         // $('#Description1').val("");
         // $('#Price1').val("");
-      });
+      
 
       // alert(Title1 + " " + Description1 + " " +Price1);
 
-    });
+    
 
-    function populateExistingMovies(result, status) {
-      for (i = 0; i < result.length; i++) {
-        console.log(result[i]);
-        $("#ownedMovies").append(
-          '<li class="list-group-item" id="listTitle">' + result[i].Title + ' - '
-           + result[i].Description +  ' - ' + result[i].Price + '</li>');
+        function populateExistingMovies(result, status) {
+            $("ownedMovies").empty();
+        for (i = 0; i < result.length; i++) {
+            console.log(result[i]);
+            $("#ownedMovies").append(
+             '<li class="list-group-item" id="listTitle"><a href="#">' + result[i].Title + ' - '
+            + result[i].Description +  ' - ' + result[i].Price + '</a></li>');
       }
-    };
+        };
+        function searchOwnedMovies() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("ownedMovies");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+
+                }
+            }
+        };
+        function searchWantedMovies() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("wantedMovies");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+
+                }
+            }
+        };
     $(document).ready(function() {
       $.ajax({
           url: "http://localhost:52929/Api/Movies/OwnedMovies",
@@ -291,11 +374,25 @@
         for (i = 0; i < result.length; i++) {
           console.log(result[i]);
           $("#wantedMovies").append(
-            '<li class="list-group-item" id="listTitle">' + result[i].Title + ' - '
-             + result[i].Description +  ' - ' + result[i].Price + '</li>');
+              '<li class="list-group-item" id="listTitle"><a href="#">' + result[i].Title + ' - '
+              + result[i].Description + ' - ' + result[i].Price + '</a></li>');
         }
       }
-    });
+        });
+        $(document).ready(function () {
+            $('#submit1').click(function (event) {
+                var title, description, price;
+                title = document.getElementById("Title1");
+                description = document.getElementById("Description1");
+                price = document.getElementById("Price1");
+                $.ajax({
+                    url: "http://localhost:52929/Api/Movies/AddMovies",
+                    data: { Title: title, isOwned: 1, Description: description, Price: price, isActive: 1 },
+                    success: function (status) {
+                    }
+                });
+            });
+            });
     });
     </script>
 
