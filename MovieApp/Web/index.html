@@ -383,14 +383,21 @@
             $('#submit1').click(function (event) {
                 var title, description, price;
                 title = document.getElementById("Title1");
+                titleValue = title.value; 
                 description = document.getElementById("Description1");
+                descriptionValue = description.value;
                 price = document.getElementById("Price1");
+                priceValue = price.value;
                 $.ajax({
+                    type: 'POST',
                     url: "http://localhost:52929/Api/Movies/AddMovies",
-                    data: { Title: title, isOwned: 1, Description: description, Price: price, isActive: 1 },
+                    data: { Title: titleValue, isOwned: true, Description: descriptionValue, Price: priceValue, isActive: 1 },
+                    dataType:"text",
                     success: function (status) {
+                        console.log("sucess");
                     }
                 });
+                console.log("nope");
             });
             });
     });
