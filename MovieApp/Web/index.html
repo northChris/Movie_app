@@ -84,13 +84,13 @@
             padding: 12px 20px 12px 40px;
             border: 1px solid #ddd;
             margin-bottom: 12px;
-          }
+            }
 
             #myUL {
             list-style-type: none;
             padding: 0;
             margin: 0;
-          }
+            }
 
             #myUL li a {
                 border: 1px solid #ddd;
@@ -105,7 +105,16 @@
 
             #myUL li a:hover:not(.header) {
                     background-color: #eee;
-                }
+             }
+            #Title1{
+                width: 568px;
+            }
+            #Description1{
+                width: 568px;
+            }
+            #Price1{
+                width: 568px;
+            }
     </style>
 
 
@@ -120,7 +129,7 @@
                 <a class="navbar-brand" href="#">Movie App</a>
             </div>
             <div>
-                <input type="text" id="myInput" onkeyup="searchOwnedMovies(), searchWantedMovies()" placeholder="Search for names.." title="Type in a name">
+                <input type="text" id="myInput" onkeyup="searchOwnedMovies(), searchWantedMovies()" placeholder="Search for Movies.." title="Type in a name">
             </div>
         </div>
         <!-- /.container-fluid -->
@@ -153,10 +162,10 @@
                             <h4 class="modal-title">Add Movie</h4>
                         </div>
                         <div class="modal-body">
-                            <div class "container">
+                            <div class = "container">
 
                                 <form>
-                                    <div class "row">
+                                    <div class = "row">
                                         <div>
                                             <div class="form-group">
                                                 <label for="Title1">Title</label>
@@ -164,7 +173,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class "row">
+                                    <div class = "row">
                                         <div>
                                             <div class="form-group">
                                                 <label for="Description1">Description</label>
@@ -172,7 +181,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class "row">
+                                    <div class = "row">
                                         <div>
                                             <div class="form-group">
                                                 <label for="Price1">Price</label>
@@ -216,7 +225,7 @@
                                     <div class "row">
                                         <div>
                                             <div class="form-group">
-                                                <label for="Title1">Title</label>
+                                                <label for="Title2">Title</label>
                                                 <input type="text" class="form-control" id="Title2" placeholder="title" value="">
                                             </div>
                                         </div>
@@ -224,7 +233,7 @@
                                     <div class "row">
                                         <div>
                                             <div class="form-group">
-                                                <label for="Description1">Description</label>
+                                                <label for="Description2">Description</label>
                                                 <input type="text" class="form-control" id="Description2" placeholder="Description" value="">
                                             </div>
                                         </div>
@@ -232,7 +241,7 @@
                                     <div class "row">
                                         <div>
                                             <div class="form-group">
-                                                <label for="Price1">Price</label>
+                                                <label for="Price2">Price</label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon">$</div>
                                                     <input type="number" class="form-control" id="Price2" placeholder="Price" value="">
@@ -250,6 +259,61 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Trigger the modal with a button -->
+            <!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#editMovie">Open Modal</button>-->
+
+            <!-- Modal -->
+            <div id="editMovie" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class "container">
+                                <form>
+                                    <div class "row">
+                                        <div>
+                                            <div class="form-group">
+                                                <label for="editTilte">Title</label>
+                                                <input type="text" class="form-control" id="editTitle" placeholder="title" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class "row">
+                                        <div>
+                                            <div class="form-group">
+                                                <label for="editDescription">Description</label>
+                                                <input type="text" class="form-control" id="editDescription" placeholder="Description" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class "row">
+                                        <div>
+                                            <div class="form-group">
+                                                <label for="editPrice">Price</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">$</div>
+                                                    <input type="number" class="form-control" id="editPrice" placeholder="Price" value="">
+                                                    <div class="input-group-addon">.00</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary editSubmit" id="editSubmit">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -325,8 +389,11 @@
         for (i = 0; i < result.length; i++) {
             console.log(result[i]);
             $("#ownedMovies").append(
-             '<li class="list-group-item" id="listTitle"><a href="#">' + result[i].Title + ' - '
-            + result[i].Description +  ' - ' + result[i].Price + '</a></li>');
+                '<li class="list-group-item" id="' + result[i].id + '"><span>' + result[i].Title + ' - '
+                + result[i].Description + ' - $' + result[i].Price +
+                '<button class = "deleteButton" id="' + result[i].id + '">delete</button>' +
+                '<button class = "editButton" data-toggle="modal" data-target="#editMovie" id="'
+                + result[i].id + '">edit</button></span ></li > ');
       }
         };
         function searchOwnedMovies() {
@@ -336,7 +403,7 @@
             ul = document.getElementById("ownedMovies");
             li = ul.getElementsByTagName("li");
             for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
+                a = li[i].getElementsByTagName("span")[0];
                 if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
                     li[i].style.display = "";
                 } else {
@@ -344,6 +411,58 @@
 
                 }
             }
+        };
+        function searchOwnedMoviesForPostRequest() {
+            var input, filter, ul, li, a, i, id;
+            input = document.getElementById("Title1");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("ownedMovies");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("span")[0];
+                id = li[i].getAttribute("id");
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    postRequestForOwnedMovies(id);
+                } else {
+                    console.log('error post request failed');
+                }
+            }
+        };
+        function postRequestForOwnedMovies() {
+            var id, title, description, price;
+            title = document.getElementById("Title1");
+            titleValue = title.value;
+            description = document.getElementById("Description1");
+            descriptionValue = description.value;
+            price = document.getElementById("Price1");
+            priceValue = price.value;
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost:52929/Api/Movies/AddMovies",
+                data: { id:id, Title: titleValue, isOwned: true, Description: descriptionValue, Price: priceValue, isActive: true },
+                dataType: "text",
+                success: function (status) {
+                    console.log("success");
+                },
+            });
+        };
+        function postRequestForWantedMovies() {
+            var id, title, description, price;
+            title = document.getElementById("Title2");
+            titleValue = title.value;
+            description = document.getElementById("Description2");
+            descriptionValue = description.value;
+            price = document.getElementById("Price2");
+            priceValue = price.value;
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost:52929/Api/Movies/AddMovies",
+                data: { id: id, Title: titleValue, isOwned: false, Description: descriptionValue, Price: priceValue, isActive: true },
+                dataType: "text",
+                success: function (status) {
+                    console.log("success");
+                },
+            });
         };
         function searchWantedMovies() {
             var input, filter, ul, li, a, i;
@@ -352,7 +471,7 @@
             ul = document.getElementById("wantedMovies");
             li = ul.getElementsByTagName("li");
             for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
+                a = li[i].getElementsByTagName("span")[0];
                 if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
                     li[i].style.display = "";
                 } else {
@@ -361,46 +480,106 @@
                 }
             }
         };
-    $(document).ready(function() {
-      $.ajax({
-          url: "http://localhost:52929/Api/Movies/OwnedMovies",
-          success: function(result, status) {
-            populateExistingMovies(result,status)
-          }
-      });
-    $.ajax({
-      url: "http://localhost:52929/Api/Movies/WantedMovies",
-      success: function(result, status){
-        for (i = 0; i < result.length; i++) {
-          console.log(result[i]);
-          $("#wantedMovies").append(
-              '<li class="list-group-item" id="listTitle"><a href="#">' + result[i].Title + ' - '
-              + result[i].Description + ' - ' + result[i].Price + '</a></li>');
-        }
-      }
-        });
-        $(document).ready(function () {
-            $('#submit1').click(function (event) {
-                var title, description, price;
-                title = document.getElementById("Title1");
-                titleValue = title.value; 
-                description = document.getElementById("Description1");
-                descriptionValue = description.value;
-                price = document.getElementById("Price1");
-                priceValue = price.value;
+        //function deleteMovie(deleteid, delTitle, delDescription, delPrice) {
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: "http://localhost:52929/Api/Movies/DeleteMovies",
+        //        data: { id: deleteid, Title: delTitle, isOwned: true, Description: delDescription, Price: delPrice, isActive: true },
+        //        dataType: "text",
+        //        success: function (status) {
+        //            console.log("success");
+        //        },
+        //        error: function (status, error) {
+        //            console.log(status, error);
+        //        }
+        //    });
+        //};
+        function deleteMovie(deleteid) {
+            $.ajax({
+                type: 'DELETE',
+                url: "http://localhost:52929/Api/Movies/DeleteMovies?id=" + deleteid,
+                success: function (status) {
+                    console.log("success");
+                },
+                error: function (status, error) {
+                    console.log(status, error);
+                }
+            });
+        };
+        function editMovie(editId, editTitle, editOwned, editDescription, editPrice) {
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost:52929/Api/Movies/AddMovies",
+                data: { id: editId, Title: editTitle, isOwned: editOwned, Description: editDescription, Price: editPrice, isActive: true },
+                dataType: "text",
+                success: function (status) {
+                    console.log("Movie Updated");
+                },
+                error: function (status, error) {
+                    console.log(status, error);
+                }
+            });
+        };
+            $(document).ready(function () {
                 $.ajax({
-                    type: 'POST',
-                    url: "http://localhost:52929/Api/Movies/AddMovies",
-                    data: { Title: titleValue, isOwned: true, Description: descriptionValue, Price: priceValue, isActive: 1 },
-                    dataType:"text",
-                    success: function (status) {
-                        console.log("sucess");
+                    url: "http://localhost:52929/Api/Movies/OwnedMovies",
+                    success: function (result, status) {
+                        populateExistingMovies(result, status)
                     }
                 });
-                console.log("nope");
+                $.ajax({
+                    url: "http://localhost:52929/Api/Movies/WantedMovies",
+                    success: function (result, status) {
+                        for (i = 0; i < result.length; i++) {
+                            console.log(result[i]);
+                            $("#wantedMovies").append(
+                                '<li class="list-group-item" id="' + result[i].id + '"><span>' + result[i].Title + ' - '
+                                + result[i].Description + ' - $' + result[i].Price +
+                                '<button class = "deleteButton" id="' + result[i].id + '">delete</button>' +
+                                '<button class = "editButton" data-toggle="modal" data-target="#editMovie" id="'
+                                + result[i].id + '">edit</button></span ></li > ');
+                        }
+                    }
+                });
+                $(document).ready(function () {
+                    $('#submit1').click(function (event) {
+                        postRequestForOwnedMovies();
+                        location.reload();
+                    });
+                });
+            });
+            $(document).ready(function () {
+                $('#submit2').click(function (event) {
+                    postRequestForWantedMovies();
+                    location.reload();
+                });
+            });
+            $(document).ready(function () {
+                var deleteid;
+                $('body').on('click', 'button.deleteButton', function (e) {
+                    deleteid = e.target.id;
+                    deleteMovie(deleteid);
             });
             });
-    });
+            $(document).ready(function () {
+                var editId, editTitle, editOwned, editDescription, editPrice;
+                $('body').on('click', 'button.editButton', function (e) {
+                    editId = e.target.id;
+                    
+                   console.log(editTitle);
+                    //editMovie(editId, editTitle, editOwned, editDescription, editPrice);
+                });
+            });
+            $(document).ready(function () {
+                $('body').on('click', 'button.editSubmit', function (e) {
+                   
+
+                    
+                });
+            });
+           
+
+        
     </script>
 
 </body>

@@ -32,7 +32,7 @@ namespace MovieApp.Controllers
         }
         
         [Route("DeleteMovies")]
-        public IHttpActionResult GetDeleteMovies(int id)
+        public IHttpActionResult DeleteMovies(int id)
         {
             var deletedMovie = db.Movie.FirstOrDefault(x => x.id == id);
 
