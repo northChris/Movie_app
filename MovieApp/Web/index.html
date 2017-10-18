@@ -565,18 +565,170 @@
                 var editId, editTitle, editOwned, editDescription, editPrice;
                 $('body').on('click', 'button.editButton', function (e) {
                     editId = e.target.id;
-                    
-                   console.log(editTitle);
-                    //editMovie(editId, editTitle, editOwned, editDescription, editPrice);
+                    $.ajax({
+                        url: "http://localhost:52929/Api/Movies/OwnedMovies",
+                        success: function (result, status) {
+                            console.log(editId);
+                            
+                            for (i = 0; i < result.length; i++) {
+                                console.log(result[i].id);
+                                if (result[i].id == editId) {
+                                    $('#editTitle').val(result[i].Title);
+                                    $('#editDescription').val(result[i].Description);
+                                    $('#editPrice').val(result[i].Price);
+                                    return;
+                                } else {
+                                    $.ajax({
+                                        url: "http://localhost:52929/Api/Movies/WantedMovies",
+                                        success: function (result, status) {
+                                            for (i = 0; i < result.length; i++) {
+                                                console.log(result[i].id);
+                                                if (result[i].id == editId) {
+                                                    $('#editTitle').val(result[i].Title);
+                                                    $('#editDescription').val(result[i].Description);
+                                                    $('#editPrice').val(result[i].Price);
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                     });
+                                }
+                            }
+                            
+                               
+                            }
+                    });
+                    $('body').on('click', 'button.editSubmit', function (e) {
+                        $.ajax({
+                            url: "http://localhost:52929/Api/Movies/OwnedMovies",
+                            success: function (result, status) {
+                                for (i = 0; i < result.length; i++) {
+                                    console.log(result[i].id);
+                                    if (result[i].id == editId) {
+                                        var id, titleVal, descriptionVal, priceVal;
+                                        id = result[i].id;
+                                        titleVal = $('#editTitle').val();
+                                        descriptionVal = $('#editDescription').val();
+                                        priceVal = $('#editPrice').val();
+                                        console.log(titleVal);
+                                        console.log(descriptionVal);
+                                        console.log(priceVal);
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "http://localhost:52929/Api/Movies/AddMovies",
+                                            data: { id: id, Title: titleVal, isOwned: true, Description: descriptionVal, Price: priceVal, isActive: true },
+                                            dataType: "text",
+                                            success: function (status) {
+                                                console.log("success");
+                                            },
+                                        });
+                                        
+                                        break;
+                                    } else {
+                                        $.ajax({
+                                            url: "http://localhost:52929/Api/Movies/WantedMovies",
+                                            success: function (result, status) {
+                                                for (i = 0; i < result.length; i++) {
+                                                    //console.log(result[i].id);
+                                                    console.log(editId);
+                                                    if (result[i].id == editId) {
+                                                        var id, titleVal, descriptionVal, priceVal;
+                                                        id = result[i].id;
+                                                        titleVal = $('#editTitle').val();
+                                                        descriptionVal = $('#editDescription').val();
+                                                        priceVal = $('#editPrice').val();
+                                                        console.log(titleVal);
+                                                        console.log(descriptionVal);
+                                                        console.log(priceVal);
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "http://localhost:52929/Api/Movies/AddMovies",
+                                                            data: { id: id, Title: titleVal, isOwned: false, Description: descriptionVal, Price: priceVal, isActive: true },
+                                                            dataType: "text",
+                                                            success: function (status) {
+                                                                console.log("success");
+                                                                return;
+                                                            },
+                                                        });
+                                                        
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                };
+                            }
+                        });
+                    });
                 });
             });
-            $(document).ready(function () {
-                $('body').on('click', 'button.editSubmit', function (e) {
-                   
 
-                    
-                });
-            });
+            //$(document).ready(function () {
+            //    $('body').on('click', 'button.editSubmit', function (e) {
+            //        var editId, editTitle, editOwned, editDescription, editPrice;
+            //        editId = e.target.id;
+            //        $.ajax({
+            //            url: "http://localhost:52929/Api/Movies/OwnedMovies",
+            //            success: function (result, status) {
+            //                for (i = 0; i < result.length; i++) {
+            //                    console.log(result[i].id);
+            //                    if (result[i].id == editId) {
+            //                        var id, titleVal, descriptionVal, priceVal;
+            //                        id = result[i].id;
+            //                        titleVal = $('#editTitle').val();
+            //                        descriptionVal = $('#editDescription').val();
+            //                        priceVal = $('#editPrice').val();
+            //                        console.log(titleVal);
+            //                        console.log(descriptionVal);
+            //                        console.log(priceVal);
+            //                        $.ajax({
+            //                            type: 'POST',
+            //                            url: "http://localhost:52929/Api/Movies/AddMovies",
+            //                            data: { id: id, Title: titleVal, isOwned: true, Description: descriptionVal, Price: priceVal, isActive: true },
+            //                            dataType: "text",
+            //                            success: function (status) {
+            //                                console.log("success");
+            //                            },
+            //                        });
+            //                        debugger;
+            //                        return;
+            //                    } else {
+            //                        $.ajax({
+            //                            url: "http://localhost:52929/Api/Movies/WantedMovies",
+            //                            success: function (result, status) {
+            //                                for (i = 0; i < result.length; i++) {
+            //                                    console.log(result[i].id);
+            //                                    console.log(editId);
+            //                                    if (result[i].id == editId) {
+            //                                        var id, titleVal, descriptionVal, priceVal;
+            //                                        id = result[i].id;
+            //                                        titleVal = $('#editTitle').val();
+            //                                        descriptionVal = $('#editDescription').val();
+            //                                        priceVal = $('#editPrice').val();
+            //                                        console.log(titleVal);
+            //                                        console.log(descriptionVal);
+            //                                        console.log(priceVal);
+            //                                        $.ajax({
+            //                                            type: 'POST',
+            //                                            url: "http://localhost:52929/Api/Movies/AddMovies",
+            //                                            data: { id: id, Title: titleVal, isOwned: true, Description: descriptionVal, Price: priceVal, isActive: true },
+            //                                            dataType: "text",
+            //                                            success: function (status) {
+            //                                                console.log("success");
+            //                                            },
+            //                                        });
+            //                                        return;
+            //                                    }
+            //                                }
+            //                            }
+            //                        });
+            //                    }
+            //                };
+            //            }
+            //        });
+            //    });
+            //});
+
            
 
         
