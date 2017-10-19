@@ -138,11 +138,7 @@
     <div class="owned-container container col-md-5">
         <div class="container owned-list col-md-offset-2 col-md-2">
             <ul id="ownedMovies">
-                <!-- <ul class="list-group">
-                    <li class="list-group-item" id="listTitle" value=""></li>
-                    <li class="list-group-item" id="listDecription" value=""></li>
-                    <li class="list-group-item" id="listPrice" value=""></li>
-                </ul> -->
+                
             </ul>
         </div>
     </div>
@@ -261,8 +257,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Trigger the modal with a button -->
-            <!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#editMovie">Open Modal</button>-->
 
             <!-- Modal -->
             <div id="editMovie" class="modal fade" role="dialog">
@@ -323,11 +317,7 @@
     <div class="wanted-container col-md-5">
         <div class="container wanted-list col-md-offset-2 col-md-2">
             <ul id="wantedMovies">
-                <!-- <ul class="list-group">
-                    <li class="list-group-item" id="listTitle" value=""></li>
-                    <li class="list-group-item" id="listDecription" value=""></li>
-                    <li class="list-group-item" id="listPrice" value=""></li>
-                </ul> -->
+                
             </ul>
         </div>
     </div>
@@ -337,53 +327,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script type="text/javascript">
-    //  $(document).ready(function(){
-    //     if (jQuery) {
-    //       // jQuery is loaded
-    //       alert("Yeah!");
-    //     } else {
-    //       // jQuery is not loaded
-    //       alert("Doesn't Work");
-    //     }
-    //  });
-    //$(document).ready(function() {
-    //    $('#submit1').click(function (event) {
-    //        console.log("the button was clicked");
-    //    var Title1 = $('#Title1').val();
-    //    var Description1 = $('#Description1').val();
-    //    var Price1 = $('#Price1').val();
-    //    $.ajax({
-    //        url: "http://localhost:52929/Api/Movies/AddMovies",
-    //        data: "{Title: yes man, isOwned:1, Description: jim carrey, Price: 14.95, isActive:1}",
-    //        success: function () {
-    //            console.log("the json worked");
-    //            $.ajax({
-    //                url: "http://localhost:52929/Api/Movies/OwnedMovies",
-    //                success: function (result, status) {
-    //                    console.log("populate movies worked");
-    //                    populateExistingMovies(result, status)
-    //                }
-    //            });
-    //        }
-    //    })
-    //    });
-    //});
-        //$("#ownedMovies").append('<li class="list-group-item" id="listTitle" value=""></li>' +
-        //  '<li class="list-group-item" id="listDecription" value=""></li>' +
-        //  '<li class="list-group-item" id="listPrice" value=""></li>' +
-        //  '<br></br>')
-        //$('#listTitle').text(Title1);
-        //$('#listDecription').text(ription1);
-        //$('#listPrice').text("$" + Price1);
-        // $('#Title1').val("");
-        // $('#Description1').val("");
-        // $('#Price1').val("");
-      
-
-      // alert(Title1 + " " + Description1 + " " +Price1);
-
     
-
         function populateExistingMovies(result, status) {
             $("ownedMovies").empty();
         for (i = 0; i < result.length; i++) {
@@ -480,26 +424,14 @@
                 }
             }
         };
-        //function deleteMovie(deleteid, delTitle, delDescription, delPrice) {
-        //    $.ajax({
-        //        type: 'POST',
-        //        url: "http://localhost:52929/Api/Movies/DeleteMovies",
-        //        data: { id: deleteid, Title: delTitle, isOwned: true, Description: delDescription, Price: delPrice, isActive: true },
-        //        dataType: "text",
-        //        success: function (status) {
-        //            console.log("success");
-        //        },
-        //        error: function (status, error) {
-        //            console.log(status, error);
-        //        }
-        //    });
-        //};
         function deleteMovie(deleteid) {
             $.ajax({
                 type: 'DELETE',
                 url: "http://localhost:52929/Api/Movies/DeleteMovies?id=" + deleteid,
                 success: function (status) {
                     console.log("success");
+                   
+                    
                 },
                 error: function (status, error) {
                     console.log(status, error);
@@ -557,8 +489,15 @@
             $(document).ready(function () {
                 var deleteid;
                 $('body').on('click', 'button.deleteButton', function (e) {
-                    deleteid = e.target.id;
-                    deleteMovie(deleteid);
+                    var confirmBox = confirm("Are you sure you want to delete this movie?");
+                    if (confirmBox == true) {
+                        deleteid = e.target.id;
+                        deleteMovie(deleteid);
+                        location.reload();
+                    } else {
+                        alert("The Movie was not deleted");
+                    };
+                    
             });
             });
             $(document).ready(function () {
@@ -620,6 +559,7 @@
                                             dataType: "text",
                                             success: function (status) {
                                                 console.log("success");
+                                                location.reload();
                                             },
                                         });
                                         
@@ -629,7 +569,6 @@
                                             url: "http://localhost:52929/Api/Movies/WantedMovies",
                                             success: function (result, status) {
                                                 for (i = 0; i < result.length; i++) {
-                                                    //console.log(result[i].id);
                                                     console.log(editId);
                                                     if (result[i].id == editId) {
                                                         var id, titleVal, descriptionVal, priceVal;
@@ -637,9 +576,6 @@
                                                         titleVal = $('#editTitle').val();
                                                         descriptionVal = $('#editDescription').val();
                                                         priceVal = $('#editPrice').val();
-                                                        console.log(titleVal);
-                                                        console.log(descriptionVal);
-                                                        console.log(priceVal);
                                                         $.ajax({
                                                             type: 'POST',
                                                             url: "http://localhost:52929/Api/Movies/AddMovies",
@@ -647,7 +583,7 @@
                                                             dataType: "text",
                                                             success: function (status) {
                                                                 console.log("success");
-                                                                return;
+                                                                location.reload();
                                                             },
                                                         });
                                                         
@@ -661,77 +597,7 @@
                         });
                     });
                 });
-            });
-
-            //$(document).ready(function () {
-            //    $('body').on('click', 'button.editSubmit', function (e) {
-            //        var editId, editTitle, editOwned, editDescription, editPrice;
-            //        editId = e.target.id;
-            //        $.ajax({
-            //            url: "http://localhost:52929/Api/Movies/OwnedMovies",
-            //            success: function (result, status) {
-            //                for (i = 0; i < result.length; i++) {
-            //                    console.log(result[i].id);
-            //                    if (result[i].id == editId) {
-            //                        var id, titleVal, descriptionVal, priceVal;
-            //                        id = result[i].id;
-            //                        titleVal = $('#editTitle').val();
-            //                        descriptionVal = $('#editDescription').val();
-            //                        priceVal = $('#editPrice').val();
-            //                        console.log(titleVal);
-            //                        console.log(descriptionVal);
-            //                        console.log(priceVal);
-            //                        $.ajax({
-            //                            type: 'POST',
-            //                            url: "http://localhost:52929/Api/Movies/AddMovies",
-            //                            data: { id: id, Title: titleVal, isOwned: true, Description: descriptionVal, Price: priceVal, isActive: true },
-            //                            dataType: "text",
-            //                            success: function (status) {
-            //                                console.log("success");
-            //                            },
-            //                        });
-            //                        debugger;
-            //                        return;
-            //                    } else {
-            //                        $.ajax({
-            //                            url: "http://localhost:52929/Api/Movies/WantedMovies",
-            //                            success: function (result, status) {
-            //                                for (i = 0; i < result.length; i++) {
-            //                                    console.log(result[i].id);
-            //                                    console.log(editId);
-            //                                    if (result[i].id == editId) {
-            //                                        var id, titleVal, descriptionVal, priceVal;
-            //                                        id = result[i].id;
-            //                                        titleVal = $('#editTitle').val();
-            //                                        descriptionVal = $('#editDescription').val();
-            //                                        priceVal = $('#editPrice').val();
-            //                                        console.log(titleVal);
-            //                                        console.log(descriptionVal);
-            //                                        console.log(priceVal);
-            //                                        $.ajax({
-            //                                            type: 'POST',
-            //                                            url: "http://localhost:52929/Api/Movies/AddMovies",
-            //                                            data: { id: id, Title: titleVal, isOwned: true, Description: descriptionVal, Price: priceVal, isActive: true },
-            //                                            dataType: "text",
-            //                                            success: function (status) {
-            //                                                console.log("success");
-            //                                            },
-            //                                        });
-            //                                        return;
-            //                                    }
-            //                                }
-            //                            }
-            //                        });
-            //                    }
-            //                };
-            //            }
-            //        });
-            //    });
-            //});
-
-           
-
-        
+            });  
     </script>
 
 </body>
