@@ -129,7 +129,6 @@ C:\Users\north\Documents\Movie_app\MovieApp\bin\Newtonsoft.Json.xml
 C:\Users\north\Documents\Movie_app\MovieApp\bin\System.Net.Http.Formatting.xml
 C:\Users\north\Documents\Movie_app\MovieApp\bin\System.Web.Http.xml
 C:\Users\north\Documents\Movie_app\MovieApp\bin\System.Web.Http.WebHost.xml
-C:\Users\north\Documents\Movie_app\MovieApp\obj\Debug\MovieApp.csprojResolveAssemblyReference.cache
 C:\Users\north\Documents\Movie_app\MovieApp\obj\Debug\MovieApp.csproj.CoreCompileInputs.cache
 C:\Users\north\Documents\Movie_app\MovieApp\obj\Debug\MovieApp.dll
 C:\Users\north\Documents\Movie_app\MovieApp\obj\Debug\MovieApp.pdb

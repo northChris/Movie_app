@@ -63,6 +63,16 @@ namespace MovieApp.Controllers
 
             return Ok();
         }
+        [Route("UsersTable")]
+        public IHttpActionResult GetUsers([FromBody] string username, string password)
+        {
+            var result = db.User.FirstOrDefault(x => x.Username == username && x.Password == password).id;
+            return Ok(result);
+        }
+
+
+
+
         //// GET: api/Movies/5
         //[ResponseType(typeof(Movie))]
         //public async Task<IHttpActionResult> GetMovie(int id)
