@@ -115,6 +115,9 @@
         .list-container {
             height: 75%;
         }
+        .scroll {
+            overflow: scroll;
+        }
 
         #myInput {
             background-position: 10px 12px;
@@ -170,7 +173,7 @@
                 <a class="navbar-brand" href="#">Cinemagic</a>
             </div>
             <div>
-                <input type="text" id="myInput" onkeyup="searchOwnedMovies(), searchWantedMovies()" placeholder="Search for Movies.." title="Type in a name">
+                <input type="text" id="myInput" onkeyup="searchMovies()" placeholder="Search for Movies.." title="Type in a name">
             </div>
         </div>
         <!-- /.container-fluid -->
@@ -178,7 +181,7 @@
     <div class="list-container container-fluid">
         <div class="owned-container container-fluid col-xs-12 col-md-6">
             <div class="owned-list col-md-12">
-                <ul class="col-md-12" id="ownedMovies"></ul>
+                <ul class="col-md-12 scroll" id="ownedMovies"></ul>
             </div>
 
             <div class="button-container container-fluid col-md-12">
@@ -242,7 +245,7 @@
 
         <div class="wanted-container container-fluid col-xs-12 col-md-6">
             <div class="wanted-list col-md-12">
-                <ul class="col-md-12" id="wantedMovies"></ul>
+                <ul class="col-md-12 scroll" id="wantedMovies"></ul>
             </div>
 
             <div class="button-container container-fluid col-md-12">
@@ -371,17 +374,18 @@
                 console.log(result[i]);
                 $(currentList).append(
                     '<li class="list-group-item col-xs-12 col-md-12" id="'
-                    + result[i].Id + '"><div class ="col-xs-12 col-md-8">' + result[i].Title + ' - '
+                    + result[i].id + '"><div class ="col-xs-12 col-md-8">' + result[i].Title + ' - '
                     + result[i].Description + ' - $' + result[i].Price +
-                    '</div><div class="col-xs-12 col-md-4"><button class = "deleteButton secondary-btn btn btn-secondary pull-right">delete</button>' +
+                    '</div><div class="col-xs-12 col-md-4"><button class = "deleteButton secondary-btn btn btn-secondary pull-right" id="'+ result[i].id + '">delete</button>' +
                     '<button class = "editButton submit-btn btn btn-primary pull-right" data-toggle="modal" data-target="#editMovie"">edit</button></div></li > ');
             }
         };
-        function searchMovies(currentList) {
-            var input, filter, ul, li, a, i;
+        function searchMovies() {
+            var input, filter, ul, li, ul2, li2, a, i, list, list2 ;
+            var list = "ownedMovies"
             input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
-            ul = document.getElementById(currentList);
+            ul = document.getElementById(list);
             li = ul.getElementsByTagName("li");
             for (i = 0; i < li.length; i++) {
                 a = li[i].getElementsByTagName("span")[0];
@@ -389,6 +393,17 @@
                     li[i].style.display = "";
                 } else {
                     li[i].style.display = "none";
+                }
+            }
+            list2 = 'wantedMovies'
+            ul2 = document.getElementById(list2);
+            li2 = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li2[i].getElementsByTagName("span")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li2[i].style.display = "";
+                } else {
+                    li2[i].style.display = "none";
                 }
             }
         };
@@ -463,41 +478,42 @@
         function deleteMovie(deleteId, serverLocation) {
             $.ajax({
                 type: 'DELETE',
-                url: "http://localhost:52696/Api/Movies/DeleteMovie?id=" + deleteId,
+                url: "http://localhost:52929/Api/Movies/DeleteMovie?id=" + deleteId,
                 success: function (status) {
                     console.log("success");
+                    location.reload();
                 },
                 error: function (status, error) {
                     console.log(status, error);
                 }
             });
         };
-        function editMovie(editId, editTitle, editOwned, editDescription, editPrice, serverLocation) {
-            $.ajax({
-                type: 'POST',
-                url: "http://localhost:52696/Api/Movies/AddMovies",
-                data: { id: editId, Title: editTitle, isOwned: editOwned, Description: editDescription, Price: editPrice, isActive: true },
-                dataType: "text",
-                success: function (status) {
-                    console.log("Movie Updated");
-                },
-                error: function (status, error) {
-                    console.log(status, error);
-                }
-            });
-        };
+        //function editMovie(editId, editTitle, editOwned, editDescription, editPrice, serverLocation) {
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: "http://localhost:52929/Api/Movies/AddMovies",
+        //        data: { id: editId, Title: editTitle, isOwned: editOwned, Description: editDescription, Price: editPrice, isActive: true },
+        //        dataType: "text",
+        //        success: function (status) {
+        //            console.log("Movie Updated");
+        //        },
+        //        error: function (status, error) {
+        //            console.log(status, error);
+        //        }
+        //    });
+        //};
         function editButton(serverLocation) {
             var editTitle, editOwned, editDescription, editPrice, ownedMoviesResult, wantedMoviesResult;
             var editId = $(this).closest("li").attr("id");
             $.ajax({
-                url: " + 'serverLocation' + OwnedMovies",
+                url: "" + serverLocation + "OwnedMovies",
                 success: function (result, status) {
                     console.log(editId);
                     ownedMoviesResult = result;
                 }
             });
             $.ajax({
-                url: " + 'serverLocation' + WantedMovies",
+                url: "" + serverLocation + "WantedMovies",
                 success: function (result, status) {
                     console.log(editId);
                     wantedMoviesResult = result;
@@ -531,28 +547,32 @@
         }
 
         $(document).ready(function () {
-            var serverLocation = http://localhost:52696/Api/Movies/
+            var serverLocation = "http://localhost:52929/Api/Movies/";
                 $.ajax({
-                    url: " + 'serverLocation' + OwnedMovies",
+                    url: "" + serverLocation + "OwnedMovies",
                     success: function (result, status) {
-                        var currentList = "ownedMovies";
+                        var currentList = "#ownedMovies";
                         populateMovies(result, status, currentList)
                     }
                 });
             $.ajax({
-                url: " + 'serverLocation' + WantedMovies",
+                url: "" + serverLocation + "WantedMovies",
                 success: function (result, status) {
-                    var currentList = "wantedMovies";
+                    var currentList = "#wantedMovies";
                     populateMovies(result, status, currentList)
                 }
             });
             $('#submit1').click(function (event) {
-                postRequestForMovies();
+                var itemTitle, itemDescription, itemPrice, owned;
+                itemTitle = document.getElementById("Title1");
+                itemDescription = document.getElementById("Description1");
+                itemPrice = document.getElementById("Price1");
+                postRequestForMovies(itemTitle, itemDescription, itemPrice, owned, serverLocation);
                 location.reload();
             });
 
             $('#submit2').click(function (event) {
-                postRequestForMovies();
+                postRequestForMovies(itemTitle, itemDescription, itemPrice, owned, serverLocation);
                 location.reload();
             });
 
@@ -562,7 +582,7 @@
                 var confirmBox = confirm("Are you sure you want to delete this movie?");
                 if (confirmBox == true) {
                     deleteMovie(deleteid);
-                    location.reload();
+                    
                 } else {
                     alert("The Movie was not deleted");
                 };
