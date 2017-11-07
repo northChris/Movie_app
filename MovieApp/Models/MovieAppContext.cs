@@ -20,6 +20,6 @@ namespace MovieApp.Models
         }
 
         public DbSet<Movie> Movie { get; set; }
-        //public DbSet<User> User { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
