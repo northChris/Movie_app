@@ -63,11 +63,27 @@ namespace MovieApp.Controllers
 
             return Ok();
         }
+        [Route("GetMovie")]
+        public Movie GetMovie(int id)
+        {
+            return db.Movie.FirstOrDefault(x => x.id == id);
+        }
         [Route("UsersTable")]
         public IHttpActionResult GetUsers([FromBody] string username, string password)
         {
             var result = db.User.FirstOrDefault(x => x.Username == username && x.Password == password).id;
             return Ok(result);
+        }
+        [Route("AddUsers")]
+        public IHttpActionResult PostUsers([FromBody] User user)
+        {
+            var check = db.User.FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
+            if ( check == null)
+            {
+                db.User.Add(user);
+            };
+            db.SaveChanges();
+            return Ok();
         }
 
 
